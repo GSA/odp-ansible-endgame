@@ -1,8 +1,4 @@
 ---
-- name: copy endgame files to target
-  copy: src={{ item.src }} dest=/tmp/{{ item.dest }} mode=0770
-  with_items:
-    - { src: "{{ endgame_config }}", dest: "{{ endgame_config }}" }
     
 # Download and install Endgame package from s3 bucket when endgame_s3_bucket is set
 
@@ -15,9 +11,12 @@
 - name: Download from s3 bucket when endgame_s3_bucket is set
   aws_s3:
     bucket: "{{ endgame_s3_bucket }}"
-    object: "{{ endgame_s3_prefix }}/{{ endgame_installer }}"
-    dest: /tmp/{{ endgame_installer }}
+    object: "{{ endgame_s3_prefix }}/{{ item }}"
+    dest: /tmp/"{{ item }}""
     mode: get
+  with_items:
+    - "{{ endgame_config }}"
+    - {{ endgame_installer }}
   when: endgame_s3_bucket != ""
 
 - name: run endgame installer
