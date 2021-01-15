@@ -16,7 +16,7 @@
     mode: get
   with_items:
     - "{{ endgame_config }}"
-    - {{ endgame_installer }}
+    - "{{ endgame_installer }}"
   when: endgame_s3_bucket != ""
 
 - name: run endgame installer
