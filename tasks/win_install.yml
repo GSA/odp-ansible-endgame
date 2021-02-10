@@ -1,0 +1,10 @@
+---
+
+- name: Download EndGame Agent from S3
+  win_command: "PowerShell.exe -Command Read-S3Object -BucketName {{ endgame_s3_bucket }} -Key {{ endgame_s3_prefix }}/{{ item }} -File c:\\Temp\\EndgameAgent\\{{item}}"
+  with_items:
+    - "{{ endgame_config }}"
+    - "{{ endgame_installer }}"
+
+- name: Run EndGame with configuration
+  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer}}" -k {{ endgame_apikey }} -c "C:\Temp\EndgameAgent\{{ endgame_config }}" -l C:\Temp\error.log'
