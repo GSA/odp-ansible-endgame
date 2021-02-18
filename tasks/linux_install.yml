@@ -25,8 +25,8 @@
     state: touch
     mode: u+x
 
-- name: run endgame installer
-  shell: /tmp/{{ endgame_installer }} -k {{ endgame_apikey }} -c /tmp/{{ endgame_config }}
-  become: yes
-  args:
-    creates: /usr/sbin/esensor
+#- name: run endgame installer
+#  shell: /tmp/{{ endgame_installer }} -k {{ endgame_apikey }} -c /tmp/{{ endgame_config }}
+#  become: yes
+#  args:
+#    creates: /usr/sbin/esensor
