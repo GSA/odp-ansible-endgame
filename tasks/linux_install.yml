@@ -1,7 +1,12 @@
 ---
-    
-# Download and install Endgame package from s3 bucket when endgame_s3_bucket is set
 
+# Create Staging Folder
+- name: Create Staging Folder
+  file:
+    path: /build-artifacts/
+    state: directory
+
+# Download and install Endgame package from s3 bucket when endgame_s3_bucket is set
 - name: Ensure botocore and boto3 modules are installed
   pip:
     name:         [ "boto3", "botocore"]
@@ -12,7 +17,7 @@
   aws_s3:
     bucket: "{{ endgame_s3_bucket }}"
     object: "/{{ endgame_s3_prefix }}/{{ item }}"
-    dest: "/tmp/{{ item }}"
+    dest: "/build-artifacts/{{ item }}"
     mode: get
   with_items:
     - "{{ endgame_config }}"
@@ -21,12 +26,12 @@
 
 - name: Grant execution permission
   file:
-    path: /tmp/{{ endgame_installer }}
+    path: /build-artifacts/{{ endgame_installer }}
     state: touch
     mode: u+x
 
 #- name: run endgame installer
-#  shell: /tmp/{{ endgame_installer }} -k {{ endgame_apikey }} -c /tmp/{{ endgame_config }}
+#  shell: /build-artifacts/{{ endgame_installer }} -k {{ endgame_apikey }} -c /build-artifacts/{{ endgame_config }}
 #  become: yes
 #  args:
 #    creates: /usr/sbin/esensor
