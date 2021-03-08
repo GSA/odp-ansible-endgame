@@ -6,12 +6,20 @@
     path: /build-artifacts/
     state: directory
 
-# Download and install Endgame package from s3 bucket when endgame_s3_bucket is set
-- name: Ensure botocore and boto3 modules are installed
+- shell: pip list
+  register: pip_list
+
+- name: Ensure boto3 module is installed
   pip:
-    name:         [ "boto3", "botocore"]
-    extra_args:   "--user"
-  when: endgame_s3_bucket != ""
+    name: "boto3"
+    extra_args: "--user"
+  when: '"boto3" is not in pip_list.stdout'
+
+- name: Ensure botocore module is installed
+  pip:
+    name: "botocore"
+    extra_args: "--user"
+  when: '"botocore" is not in pip_list.stdout'
 
 - name: Download from s3 bucket when endgame_s3_bucket is set
   aws_s3:
@@ -22,7 +30,6 @@
   with_items:
     - "{{ endgame_config }}"
     - "{{ endgame_installer }}"
-  when: endgame_s3_bucket != ""
 
 - name: Grant execution permission
   file:
