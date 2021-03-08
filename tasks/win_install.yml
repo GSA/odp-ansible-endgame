@@ -6,5 +6,5 @@
     - "{{ endgame_config }}"
     - "{{ endgame_installer }}"
 
-- name: Run EndGame with configuration
-  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer}}" -k {{ endgame_apikey }} -c "C:\Temp\EndgameAgent\{{ endgame_config }}" -l C:\Temp\error.log'
+#- name: Run EndGame with configuration
+#  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer}}" -k {{ endgame_apikey }} -c "C:\Temp\EndgameAgent\{{ endgame_config }}" -l C:\Temp\error.log'
