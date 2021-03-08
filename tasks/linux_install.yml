@@ -6,21 +6,6 @@
     path: /build-artifacts/
     state: directory
 
-- shell: pip list
-  register: pip_list
-
-- name: Ensure boto3 module is installed
-  pip:
-    name: "boto3"
-    extra_args: "--user"
-  when: '"boto3" is not in pip_list.stdout'
-
-- name: Ensure botocore module is installed
-  pip:
-    name: "botocore"
-    extra_args: "--user"
-  when: '"botocore" is not in pip_list.stdout'
-
 - name: Download from s3 bucket when endgame_s3_bucket is set
   aws_s3:
     bucket: "{{ endgame_s3_bucket }}"
