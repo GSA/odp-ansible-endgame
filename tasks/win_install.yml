@@ -7,8 +7,11 @@
 
 - name: Copy installer files to remote server
   win_copy:
-    src: "{{ role_path }}/files/"
-    dest: c:\build-artifacts\
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "c:\\build-artifacts\\{{ item }}"
+  with_items:
+  - "{{ endgame_package }}"
+  - "{{ endgame_config }}"
 
 #- name: Run EndGame with configuration
 #  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer}}" -k {{ endgame_apikey }} -c "C:\Temp\EndgameAgent\{{ endgame_config }}" -l C:\Temp\error.log'

@@ -8,11 +8,14 @@
 
 - name: Copy installer files to remote server
   copy:
-    src: "{{ role_path }}/files/"
-    dest: "/build-artifacts/"
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "/build-artifacts/{{ item }}"
+  with_items:
+  - "{{ endgame_package }}"
+  - "{{ endgame_config }}"
 
 - name: Grant execution permission
   file:
-    path: /build-artifacts/
+    path: "/build-artifacts/{{ endgame_package }}"
     mode: u+x
     recurse: yes
