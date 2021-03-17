@@ -6,24 +6,13 @@
     path: /build-artifacts/
     state: directory
 
-- name: Download from s3 bucket when endgame_s3_bucket is set
-  aws_s3:
-    bucket: "{{ endgame_s3_bucket }}"
-    object: "/{{ endgame_s3_prefix }}/{{ item }}"
-    dest: "/build-artifacts/{{ item }}"
-    mode: get
-  with_items:
-    - "{{ endgame_config }}"
-    - "{{ endgame_installer }}"
+- name: Copy installer files to remote server
+  copy:
+    src: "{{ role_path }}/files/"
+    dest: "/build-artifacts/"
 
 - name: Grant execution permission
   file:
-    path: /build-artifacts/{{ endgame_installer }}
-    state: touch
+    path: /build-artifacts/
     mode: u+x
-
-#- name: run endgame installer
-#  shell: /build-artifacts/{{ endgame_installer }} -k {{ endgame_apikey }} -c /build-artifacts/{{ endgame_config }}
-#  become: yes
-#  args:
-#    creates: /usr/sbin/esensor
+    recurse: yes
