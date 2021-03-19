@@ -1,10 +1,17 @@
 ---
+# Create Staging Folder
+- name: Create Staging Folder
+  win_file:
+    path: c:\build-artifacts
+    state: directory
 
-- name: Download EndGame Agent from S3
-  win_command: "PowerShell.exe -Command Read-S3Object -BucketName {{ endgame_s3_bucket }} -Key {{ endgame_s3_prefix }}/{{ item }} -File c:\\Temp\\EndgameAgent\\{{item}}"
+- name: Copy installer files to remote server
+  win_copy:
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "c:\\build-artifacts\\{{ item }}"
   with_items:
-    - "{{ endgame_config }}"
-    - "{{ endgame_installer }}"
+  - "{{ endgame_package }}"
+  - "{{ endgame_config }}"
 
 #- name: Run EndGame with configuration
 #  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer}}" -k {{ endgame_apikey }} -c "C:\Temp\EndgameAgent\{{ endgame_config }}" -l C:\Temp\error.log'

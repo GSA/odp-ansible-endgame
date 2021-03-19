@@ -1,7 +1,5 @@
 ---
-endgame_apikey: ""
-endgame_installer: "SensorLinuxInstaller-Detect-Policy-3.57"
-endgame_config: "SensorLinuxInstaller-Detect-Policy-3.57.cfg"
-# If you are installing from s3 
-endgame_s3_bucket: ""
-endgame_s3_prefix: "deb"
+# defaults file for odp-ansible-fireeye
+
+endgame_package: SensorLinuxInstaller-Detect-Policy-3.57
+endgame_config: SensorLinuxInstaller-Detect-Policy-3.57.cfg 
