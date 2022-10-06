@@ -1,0 +1,26 @@
+---
+# Create Staging Folder
+- name: Create Staging Folder
+  win_file:
+    path: c:\build-artifacts
+    state: directory
+
+- name: Copy installer files to remote server
+  win_copy:
+    src: "{{ role_path }}/files/{{ item }}"
+    dest: "c:\\build-artifacts\\{{ item }}"
+  with_items:
+  - "{{ endgame_installer_file[package_folder] }}"
+  - "{{ endgame_config_file }}"
+
+- set_fact:
+    endgame_apikey: "{{ secret_text | json_query('endgame_apikey') }}"
+  when: not ami_build_flag
+
+- name: Run EndGame with configuration
+  win_command: '"C:\Temp\EndgameAgent\{{endgame_installer_file[package_folder]}}" -k {{ endgame_api_key }} -c "C:\Temp\EndgameAgent\{{ endgame_config_file }}" -l C:\Temp\error.log'
+  when: not ami_build_flag
+
+- debug:
+    msg: "EndGame Agent is successfully installed and registered"
+  when: not ami_build_flag
